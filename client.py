@@ -3,8 +3,6 @@ import socket
 import json
 from threading import Thread
 
-bg_img = transform.scale(image.load("images/bg.jpg"), (800, 600))
-
 # ---ПУГАМЕ НАЛАШТУВАННЯ ---
 WIDTH, HEIGHT = 800, 600
 init()
@@ -52,6 +50,11 @@ winner = None
 you_winner = None
 my_id, game_state, buffer, client = connect_to_server()
 Thread(target=receive, daemon=True).start()
+
+bg_img = transform.scale(image.load("images/bg.jpg"), (WIDTH, HEIGHT))
+paddle_img = transform.scale(image.load("images/paddle.png"), (20, 100))
+ball_img = transform.scale(image.load("images/ball.png"), (36, 20))
+
 while True:
     for e in event.get():
         if e.type == QUIT:
@@ -92,9 +95,9 @@ while True:
     if game_state:
         screen.blit(bg_img, (0, 0))
 
-        draw.rect(screen, (0, 255, 0), (20, game_state['paddles']['0'], 20, 100))
-        draw.rect(screen, (255, 0, 255), (WIDTH - 40, game_state['paddles']['1'], 20, 100))
-        draw.circle(screen, (255, 255, 255), (game_state['ball']['x'], game_state['ball']['y']), 10)
+        screen.blit(paddle_img, (20, game_state['paddles']['0']))
+        screen.blit(paddle_img, (WIDTH-40, game_state['paddles']['1']))
+        screen.blit(ball_img, ((game_state['ball']['x'], game_state['ball']['y'])))
         score_text = font_main.render(f"{game_state['scores'][0]} : {game_state['scores'][1]}", True, (255, 255, 255))
         screen.blit(score_text, (WIDTH // 2 -25, 20))
 
