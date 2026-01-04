@@ -22,6 +22,12 @@ def connect_to_server():
         except:
             pass
 
+mixer.init()
+mixer.music.load("sounds/background_music.ogg")
+wall_hit_sfx = mixer.Sound("sounds/wall_hit.wav")
+platform_hit_sfx = mixer.Sound("sounds/platform_hit.wav")
+win_sfx = mixer.Sound("sounds/win.wav")
+lose_sfx = mixer.Sound("sounds/lose.wav")
 
 def receive():
     global buffer, game_state, game_over
@@ -55,6 +61,8 @@ bg_img = transform.scale(image.load("images/bg.jpg"), (WIDTH, HEIGHT))
 paddle_img = transform.scale(image.load("images/paddle.png"), (20, 100))
 ball_img = transform.scale(image.load("images/ball.png"), (36, 20))
 
+mixer.music.play(-1)
+
 while True:
     for e in event.get():
         if e.type == QUIT:
@@ -78,8 +86,10 @@ while True:
 
         if you_winner:
             text = "Ти переміг!"
+            win_sfx.play()
         else:
             text = "Пощастить наступним разом!"
+            lose_sfx.play()
 
         win_text = font_win.render(text, True, (255, 215, 0))
         text_rect = win_text.get_rect(center=(WIDTH // 2, HEIGHT // 2))
@@ -104,10 +114,10 @@ while True:
         if game_state['sound_event']:
             if game_state['sound_event'] == 'wall_hit':
                 # звук відбиття м'ячика від стін
-                pass
+                wall_hit_sfx.play()
             if game_state['sound_event'] == 'platform_hit':
                 # звук відбиття м'ячика від платформи
-                pass
+                platform_hit_sfx.play()
 
     else:
         wating_text = font_main.render(f"Очікування гравців...", True, (255, 255, 255))
