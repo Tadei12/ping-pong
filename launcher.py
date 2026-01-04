@@ -87,8 +87,10 @@ while run:
     
     elif mouse_click == "l":
         selected_button = "0"
-        ip_button.update_font(" Enter IP Adress ")
-        port_button.update_font(" Enter Port ")
+        if ip_text == "":
+            ip_button.update_font(" Enter IP Adress ")
+        if port_text == "":
+            port_button.update_font(" Enter Port ")
     
     if selected_button == "ip":
         if pressed_key == "SKBACKSPACE":
@@ -99,7 +101,7 @@ while run:
 
     elif selected_button == "port":
         if pressed_key == "SKBACKSPACE":
-            port_text = ip_text[:-1]
+            port_text = port_text[:-1]
         else:
             port_text += pressed_key
         port_button.update_font(port_text)
